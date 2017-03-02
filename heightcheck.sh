@@ -1,5 +1,5 @@
-leader=$(factom-cli get heights | grep LeaderHeight | cut -c 15-)
-current=$(factom-cli get heights | grep DirectoryBlockHeight | cut -c 23-)
+leader=$(factom-cli get heights | grep Leader | cut -c 15-)
+current=$(factom-cli get heights | grep Directory | cut -c 23-)
 difference=$(($leader - $current))
 
 #echo Current Height: $current
@@ -8,18 +8,20 @@ difference=$(($leader - $current))
 
 if (($difference > 3))
   then
-  sleep 60
-  newcurrent=$(factom-cli get heights | grep DirectoryBlockHeight | cut -c 23-)
+  sleep 10
+  newcurrent=$(factom-cli get heights | grep Directory | cut -c 23-)
   echo $(date -u) ": Daemon behind leader height, checking if stalled..." >> ~/restart.log
   if ((($newcurrent - $current) < 5 ))
     then
+    #restart
     pkill factomd
     sleep 15
-    #open factomd in a detached screen session to allow later retrieval
-    screen -dmS fctd factomd
+    factomd
+    #uncomment to run factomd in a detached screen session named fctd to allow later retrieval
+    #screen -dmS fctd factomd
     echo $(date) ": Restarted factomd" >> ~/restart.log
     else
-    echo $(date) ": False alarm, blocks still processing" >> ~/restart.log
+    echo $(date) ": False alarm, still syncing" >> ~/restart.log
  fi
 fi
 
