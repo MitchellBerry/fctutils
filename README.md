@@ -1,7 +1,7 @@
 # Fctutils
 
-Colection of scripts useful for using the Factom network
+Collection of scripts for use with the Factom network.
 
 ##Heightcheck
-Bash script parses daemon height, checks to see if daemon is re-syncing or stalled
-If stalled restarts in a screen session that can be foregrounded later
+Parses daemon height, checks to see if re-syncing or stalled.
+
