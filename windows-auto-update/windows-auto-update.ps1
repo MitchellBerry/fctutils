@@ -32,6 +32,6 @@ try{
     Start-Process $outfile -Wait
     Write-Host "Removing installer file..."
     Remove-Item $outfile
-    Write-host "Completed"}
+    Write-host "All Done!"}
 catch{
     FatalError "Failed to install"}
