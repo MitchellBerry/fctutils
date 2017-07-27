@@ -2,7 +2,7 @@
 
 Collection of scripts for use with the Factom network.
 
-## Heightcheck
+## heightcheck
 Parses daemon height, checks to see if re-syncing or stalled.
 
 ## debian-factom-install
