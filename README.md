@@ -1,9 +1,9 @@
-# Fctutils
+# fctutils
 
 Collection of scripts for use with the Factom network.
 
 ## heightcheck
-Parses daemon height, checks to see if re-syncing or stalled.
+Parses daemon height, checks to see if re-syncing or stalled, reboots factomd if stalled.
 
 ## debian-factom-install
 Binaries install script for debian systems, boots factomd once finished
