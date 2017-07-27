@@ -4,7 +4,8 @@ $outfile = $PSScriptRoot + "FactomInstall-amd64.msi"
 
 try{
     $app = Get-WmiObject -Class Win32_Product -Filter "Name = 'Factom'"
-    $installedversion = $app.Version}
+    $installedversion = $app.Version
+    $guid = $app.IdentifyingNumber}
 catch{
     Write-Host "No Previous Version Found"}
 
@@ -23,7 +24,7 @@ catch{
 
 try{
     Write-Host "Uninstalling previous version: $installedversion"
-    Start-Process -FilePath "msiexec.exe" -ArgumentList @("/x", $app.IdentifyingNumber) -Wait}
+    Start-Process -FilePath "msiexec.exe" -ArgumentList @("/x", $guid) -Wait}
 catch{
     FatalError "Failed to Uninstall"}
 
