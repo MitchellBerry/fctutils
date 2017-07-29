@@ -20,8 +20,8 @@ if ($version -eq $installedversion){
     FatalError "Version already installed."}
 
 try{
-    Write-Host "Downloading Version $version"
-    Invoke-WebRequest $url -OutFile $outfile}
+    Invoke-WebRequest $url -OutFile $outfile
+    Write-Host "Downloaded Version $version"}
 catch{
     FatalError "$url
 URL Not Found. Check Version Entered."}
@@ -29,7 +29,8 @@ URL Not Found. Check Version Entered."}
 try{
     Start-Process -FilePath "msiexec.exe" -ArgumentList @("/x", $guid) -Wait
     Write-Host "Uninstalled previous version: $installedversion"}
-catch{"Nothing Uninstalled"}
+catch{
+    "Nothing Uninstalled"}
 
 try{
     Write-Host "Installing..."
@@ -40,6 +41,7 @@ catch{
 try{
     Remove-Item $outfile
     Write-Host "Deleted installer file: $outfile"
-    FatalError "All Done!"}
+    Write-Host "All Done!"
+    Start-Sleep -s 5}
 catch{
     FatalError "Failed to remove installation file"}
