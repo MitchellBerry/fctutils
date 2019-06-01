@@ -1,6 +1,8 @@
 #!/usr/bin/python3
-import requests
+import sys
+import json
 import subprocess
+from urllib.request import urlopen
 
 num_tags = 20
 url ='https://hub.docker.com/v2/repositories/factominc/factomd/tags/?page_size=%s' % num_tags
@@ -10,17 +12,15 @@ def prompt(tag_list):
     print("Please choose an image to install:")
     for i, tag in enumerate(tag_list):
         print("%s) %s" % (i+1, tag))
-    choice = input("Enter Tag Number: ")
-    selection_not_valid = True
-    while selection_not_valid:
+    choice = input("Enter Image Number: ")
+    while True:
         try:
             index = int(choice)
             selection = tag_list[index - 1]
-            selection_not_valid = False
+            return selection
         except (ValueError, IndexError):
             print("Not a valid selection. CTRL + C to exit or choose again.")
-            choice = input("Enter Tag Number: ")
-    return selection
+            choice = input("Enter Image Number: ")
 
 def parse_results(results):
     valid_list = []
@@ -34,8 +34,13 @@ def parse_results(results):
             valid_list.append(name)
     return valid_list
 
-response = requests.get(url)
-data = response.json()
+with urlopen(url) as response:
+    if response.status != 200:
+        print("Error connecting to Docker Hub. Exiting...")
+        sys.exit(1)
+    response_content = response.read()
+response_content.decode('utf-8')
+data = json.loads(response_content)
 results = data["results"]
 tag_list = parse_results(results)
 selection = prompt(tag_list)
@@ -60,7 +65,7 @@ try:
                     '-startdelay=600',
                     '-faulttimeout=120',
                     '-config=/root/.factom/private/factomd.conf']
-
     subprocess.call(run_commands)
 except FileNotFoundError:
     print("Unable to run docker.\nEither run as sudo or check path is correct: %s" % docker_path)
+    sys.exit(2)
