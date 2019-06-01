@@ -14,3 +14,6 @@ chmod +x testnet-updater
 ./testnet-updater
 ```
 
+### Example
+
+![Example](example.png)
