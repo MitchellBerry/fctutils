@@ -1,0 +1,3 @@
+[submodule "fct-vanitygen"]
+	path = fct-vanitygen
+	url = ./fct-vanitygen/
